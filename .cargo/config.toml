@@ -1,16 +1,17 @@
 [build]
-target = "xtensa-esp32-espidf"
+target = "riscv32imc-esp-espidf"
 
-[target.xtensa-esp32-espidf]
+[target.riscv32imc-esp-espidf]
 linker = "ldproxy"
 # runner = "espflash --monitor" # Select this runner for espflash v1.x.x
-runner = "espflash flash --monitor" # Select this runner for espflash v2.x.x
-rustflags = [ "--cfg",  "espidf_time64"] # Extending time_t for ESP IDF 5: https://github.com/esp-rs/rust/issues/110
+runner = "espflash flash --monitor --partition-table partitions.csv" # Select this runner for espflash v2.x.x
+rustflags = ["-C", "default-linker-libraries"]
 
 [unstable]
 build-std = ["std", "panic_abort"]
 
 [env]
 # Note: these variables are not used when using pio builder (`cargo build --features pio`)
-ESP_IDF_VERSION = "v5.1.1"
-
+ESP_IDF_VERSION = "v4.4.6"
+MEMFAULT_PLATFORM_EXTRA_INCLUDES = { value = "memfault", relative = true }
+MEMFAULT_ESP_HTTP_CLIENT_ENABLE = "1"
