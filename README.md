@@ -18,3 +18,10 @@ Building, flashing, and running is as simple as:
 ```bash
 cargo run
 ```
+
+## Integration Breakdown
+
+Memfault is integrated as an
+[ESP-IDF Component](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-guides/tools/idf-component-manager.html) via the
+[ESP-RS extra components interface](https://github.com/esp-rs/esp-idf-sys/blob/master/BUILD-OPTIONS.md#extra-esp-idf-components).
+This integration focuses on coredump/backtrace functionality only. The bindings needed are generated via `bindings.h` header.
