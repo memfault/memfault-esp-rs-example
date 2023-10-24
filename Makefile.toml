@@ -1,0 +1,27 @@
+[env]
+OUTPUT_ELF = "${CARGO_MAKE_CRATE_CUSTOM_TRIPLE_TARGET_DIRECTORY}/release/${CARGO_MAKE_CRATE_NAME}"
+
+[tasks.build]
+command = "cargo"
+args = ["build", "--release"]
+
+[tasks.build-id]
+command = "python"
+args = [
+    # Adds the build id to the firmware image
+    # See: https://docs.memfault.com/docs/mcu/espressif-esp32-guide/#2-add-memfault-sdk-to-the-esp-idf-cmake-build-system
+    "external/memfault-firmware-sdk/scripts/fw_build_id.py",
+    "${OUTPUT_ELF}"
+]
+dependencies = ["build"]
+
+[tasks.flash]
+command = "espflash"
+args = [
+    "flash",
+    "--monitor",
+    "--partition-table",
+    "partitions.csv",
+    "${OUTPUT_ELF}"
+]
+dependencies = ["build-id"]
