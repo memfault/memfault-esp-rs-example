@@ -2,6 +2,10 @@
 OUTPUT_ELF = "${CARGO_MAKE_CRATE_CUSTOM_TRIPLE_TARGET_DIRECTORY}/release/${CARGO_MAKE_CRATE_NAME}"
 
 [tasks.build]
+clear = true
+dependencies = ["build-app", "build-id"]
+
+[tasks.build-app]
 command = "cargo"
 args = ["build", "--release"]
 
@@ -13,7 +17,6 @@ args = [
     "external/memfault-firmware-sdk/scripts/fw_build_id.py",
     "${OUTPUT_ELF}"
 ]
-dependencies = ["build"]
 
 [tasks.flash]
 command = "espflash"
@@ -24,4 +27,4 @@ args = [
     "partitions.csv",
     "${OUTPUT_ELF}"
 ]
-dependencies = ["build-id"]
+dependencies = ["build"]

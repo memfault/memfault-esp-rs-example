@@ -22,7 +22,13 @@ Set `CONFIG_MEMFAULT_PROJECT_KEY` in `sdkconfig.defaults` to the key of your pro
 
 Define environment variables `WIFI_SSD` and `WIFI_PASS` for your network.
 
-Building, flashing, and running is as simple as:
+Building:
+
+```bash
+cargo make build
+```
+
+Flashing/running:
 
 ```bash
 cargo make flash
