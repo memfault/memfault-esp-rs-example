@@ -4,7 +4,7 @@ version = "0.1.0"
 authors = ["Blake Hildebrand <blake@memfault.com>"]
 edition = "2021"
 resolver = "2"
-rust-version = "1.66"
+rust-version = "1.75"
 
 [profile.release]
 # Make sure debug symbols are enabled for release builds. They are needed for
@@ -19,24 +19,41 @@ opt-level = "z"
 
 [features]
 
-default = ["std", "hal", "esp-idf-sys/native"]
+default = ["std", "binstart"]
 
-pio = ["esp-idf-sys/pio"]
-all = ["std", "nightly", "experimental", "embassy"]
-hal = ["esp-idf-hal", "embedded-svc", "esp-idf-svc"]
-std = ["alloc", "esp-idf-sys/std", "esp-idf-sys/binstart", "embedded-svc?/std", "esp-idf-hal?/std", "esp-idf-svc?/std"]
-alloc = ["embedded-svc?/alloc", "esp-idf-hal?/alloc", "esp-idf-svc?/alloc"]
-nightly = ["embedded-svc?/nightly", "esp-idf-svc?/nightly"] # Future: "esp-idf-hal?/nightly"
-experimental = ["embedded-svc?/experimental", "esp-idf-svc?/experimental"]
-embassy = ["esp-idf-hal?/embassy-sync", "esp-idf-hal?/critical-section", "esp-idf-hal?/edge-executor", "esp-idf-svc?/embassy-time-driver", "esp-idf-svc?/embassy-time-isr-queue"]
+std = ["alloc", "log/std", "esp-idf-hal/std", "embedded-svc/std"]
+alloc = ["esp-idf-hal/alloc", "embedded-svc/alloc", "uncased/alloc"]
+nightly = ["embedded-svc/nightly", "esp-idf-hal/nightly"]
+experimental = ["embedded-svc/experimental"]
+
+# Propagated esp-idf-hal features
+critical-section = ["esp-idf-hal/critical-section"]
+wake-from-isr = ["esp-idf-hal/wake-from-isr"]
+embassy-sync = ["esp-idf-hal/embassy-sync"]
+
+# The next are propagated from esp-idf-sys via esp-idf-hal
+native = ["esp-idf-hal/native"]
+pio = ["esp-idf-hal/pio"]
+alloc_handler = ["esp-idf-hal/alloc_handler"]
+panic_handler = ["esp-idf-hal/panic_handler"]
+binstart = ["esp-idf-hal/binstart"]
+libstart = ["esp-idf-hal/libstart"]
 
 [dependencies]
 anyhow = "1.0.44"
 log = { version = "0.4.17", default-features = false }
-esp-idf-sys = { version = "0.33", default-features = false }
-esp-idf-hal = { version = "0.41", optional = true, default-features = false }
-esp-idf-svc = { version = "0.46", optional = true, default-features = false }
-embedded-svc = { version = "0.25", optional = true, default-features = false }
+nb = "1.0.0"
+heapless = { version = "0.8", default-features = false }
+num_enum = { version = "0.7", default-features = false }
+enumset = { version = "1", default-features = false }
+uncased = { version = "0.9.7", default-features = false }
+embedded-hal-async = { version = "1", default-features = false }
+embedded-svc = { version = "0.27", default-features = false }
+esp-idf-sys = { version = "0.34" }
+esp-idf-svc = { version = "0.48" }
+esp-idf-hal = { version = "0.43", default-features = false }
+embassy-time-driver = { version = "0.1", optional = true, features = ["tick-hz-1_000_000"] }
+embassy-futures = "0.1"
 
 # Add Memfault as an external component
 [[package.metadata.esp-idf-sys.extra_components]]

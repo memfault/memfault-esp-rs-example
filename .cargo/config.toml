@@ -1,7 +1,7 @@
 [build]
-target = "riscv32imc-esp-espidf"
+target = "xtensa-esp32s3-espidf"
 
-[target.riscv32imc-esp-espidf]
+[target.xtensa-esp32s3-espidf]
 linker = "ldproxy"
 # runner = "espflash --monitor" # Select this runner for espflash v1.x.x
 runner = "espflash flash --monitor --partition-table partitions.csv" # Select this runner for espflash v2.x.x
@@ -12,6 +12,7 @@ build-std = ["std", "panic_abort"]
 
 [env]
 # Note: these variables are not used when using pio builder (`cargo build --features pio`)
+MCU="esp32s3"
 ESP_IDF_VERSION = "v4.4.6"
 MEMFAULT_PLATFORM_EXTRA_INCLUDES = { value = "memfault", relative = true }
 MEMFAULT_ESP_HTTP_CLIENT_ENABLE = "1"
